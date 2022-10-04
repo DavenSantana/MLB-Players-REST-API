@@ -9,7 +9,7 @@ document.getElementById("quoteButton").addEventListener("click", () => {
         if(req.readyState == 4){
             kanyeQuote = JSON.parse(req.responseText);
             kanyeQuote = kanyeQuote.quote;
-            document.getElementById("someheading").innerHTML = kanyeQuote;
+            document.getElementById("quote").innerHTML = kanyeQuote;
         }
     } 
     

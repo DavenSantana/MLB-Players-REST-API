@@ -8,5 +8,13 @@ module.exports = () => {
         return res.render("mlbPlayers");
     });
 
+    router.post("/createMLBPlayer", (req, res) => {
+
+    });
+
+    router.post("/deleteMLBPlayer", (req, res) => {
+
+    });
+
     return router;
 };

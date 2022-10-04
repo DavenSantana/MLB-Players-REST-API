@@ -15,6 +15,8 @@ $("#viewCountry").on("click", function () {
             let languages = country.languages;
             let currency = country.currencies;
 
+            // Get Currencies of the Country
+
             let nameofCurrency;
             let currencyName;
             let currencySymbol;
@@ -45,6 +47,8 @@ $("#viewCountry").on("click", function () {
                 currency = `${currencyName} with the symbol ${currencySymbol}`;
 
             }
+
+            // Get languages of the Country
 
             let nameOfLanguage;
             let languageName;
