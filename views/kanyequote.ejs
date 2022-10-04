@@ -1,14 +1,27 @@
-<!DOCTYPE html>
-<html>
-<body>
+<%- include('./partials/heading.ejs') %>
 
-<h1>rtnlern tlkerkl;</h1>
+    <title>Kanye Quote API</title>
+    </head>
 
-<h2 id="someheading">heading</h2>
+    <body>
 
+        <header>
+            <nav class="navbar navbar-expand bg-secondary navbar-dark mb-3">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="/">Home</a>
+                    <a class="nav-item nav-link active" href="/kanyequote">Kanye Quote</a>
+                    <a class="nav-item nav-link" href="/restcountries">Rest Countries</a>
+                </div>
+            </nav>
+        </header>
 
-    <button id="quoteButton">New quote</button>
+        <div class="container text-center">
 
-    <%- include('./scripts/kanyequote') %>
-</body>
-</html>
+            <button id="quoteButton" class="btn p-0"><img src="../kanye.webp" width="1000" height="600" class="p-0" /></button>
+
+            <p id="someheading" class="h1 mt-3">Click Kanye for a Quote</p>
+
+        </div>
+
+        <script src="../public/js/kanyequote.js"></script>
+    </body>

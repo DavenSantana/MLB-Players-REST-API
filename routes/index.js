@@ -1,19 +1,18 @@
-const express = require('express');
+const express = require("express");
 
-const secondpageRoute = require('./secondpage');
-const thirdpageRoute = require('./thirdpage');
+const kanyequoteRoute = require("./kanyequote");
+const restcountriesRoute = require("./restcountries");
 
 const router = express.Router();
 
 module.exports = () => {
   
-    router.get('/', (req, res) => {
-        res.render('index');
+    router.get("/", (req, res) => {
+        res.render("index");
     });
   
-
-    router.use('/secondpage', secondpageRoute());
-    router.use('/thirdpage', thirdpageRoute());
+    router.use("/kanyequote", kanyequoteRoute());
+    router.use("/restcountries", restcountriesRoute());
 
     return router;
 };
