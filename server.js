@@ -2,6 +2,7 @@ const express = require("express");
 const cookieSession = require("cookie-session");
 const path = require("path");
 const routes = require("./routes");
+const database = require("./database/database")
 const app = express();
 
 const port = 3000;

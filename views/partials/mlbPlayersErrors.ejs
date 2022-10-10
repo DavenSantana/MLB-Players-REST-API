@@ -1,0 +1,27 @@
+<% if(firstName === "error") { %>
+    <div id="firstNameErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> Invalid input for first name.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(lastName === "error") { %>
+    <div id="lastNameErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> Invalid input for last name.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(number === "error") { %>
+    <div id="numberErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> Invalid input for number (Must be between 0 and 99).
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(team === "error") { %>
+    <div id="teamErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> Invalid input for team (Must be full team name).
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>

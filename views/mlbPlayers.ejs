@@ -18,8 +18,31 @@
             </nav>
         </header>
 
+        <%- include('./partials/mlbPlayersErrors.ejs') %>
+
+        <%- include('./partials/mlbPlayersSuccess.ejs') %>
+
         <div class="container text-center">
-            <button class="btn btn-lg btn-info rounded-1 me-3" type="button" data-bs-toggle="modal" data-bs-target="#createPlayer">Create Player</button>
+            <button class="btn btn-lg btn-dark rounded-1 mt-5 me-3" type="button" data-bs-toggle="modal" data-bs-target="#createPlayer">Create Player</button>
+        </div>
+
+        <!-- Here goes the table thats generated when getting the '/' route -->
+        <div class="container mt-5">
+        <table class="table table-dark bg-secondary table-striped">
+            <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col" class="text-center">Number</th>
+                <th scope="col" class="text-center">Team</th>
+                <th scope="col" class="text-center">Delete</th>
+              </tr>
+
+              <%- mlbPlayersTable %>
+
+            </thead>
+            <tbody>
+          </table>
         </div>
         
         <div class="modal" id="createPlayer" aria-hidden="true" style="display: none;">
@@ -29,8 +52,10 @@
                         <i class="bi bi-person-plus-fill fa-3x"></i>
                         <h1 class="h2 mb-4">Create a Player</h1>
                         
-                        <form>
+                        <form id="createPlayerForm">
                             
+                            <%- include('./partials/mlbPlayersModalErrors.ejs') %>
+
                             <div class="form-outline mb-4">
                                 <input type="text" id="firstNameCreate" name = "firstNameCreate" class="form-control form-control-md" />
                                 <label class="form-label" for="firstNameCreate">First Name</label>
@@ -62,5 +87,50 @@
 				</div>
 			</div>
 		</div>
+
+        <div class="modal" id="deleteModal" aria-hidden="true" style="display: none;">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body text-center mb-5">
+						<i width="32" height="32" class="bi bi-x-octagon fa-5x mt-3"></i>
+						<h1>Are You Sure?</h1>
+						<p>Do you really want to delete this player? This process cannot be undone.</p>
+						<div class="btn-group">
+							<button type="button" class="btn btn-secondary btn-lg mr-2 rounded-lg"
+								data-bs-dismiss="modal">Cancel</button>
+							<a id="linkToDelete" type="button" class="btn btn-danger btn-lg rounded-lg">Delete</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../public/js/mlbPlayersCreate.js"></script>
+<script>
+    $("#firstNameErrorBackend").on("click", () => {
+        document.location.href = "/mlbPlayers";
+    });
+
+    $("#lastNameErrorBackend").on("click", () => {
+        document.location.href = "/mlbPlayers";
+    });
+
+    $("#numberErrorBackend").on("click", () => {
+        document.location.href = "/mlbPlayers";
+    });
+
+    $("#teamErrorBackend").on("click", () => {
+        document.location.href = "/mlbPlayers";
+    });
+
+    $("#mlbPlayerDeleteTrueClose").on("click", () => {
+        document.location.href = "/mlbPlayers";
+    });
+
+    $("#deleteModal").on("show.bs.modal", function (event) {
+        $("#linkToDelete").attr("href", event.relatedTarget.id);
+    });
+</script>
 
 <%- include('./partials/footer.ejs') %>
