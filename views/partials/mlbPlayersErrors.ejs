@@ -1,27 +1,62 @@
 <% if(firstName === "error") { %>
     <div id="firstNameErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
-        <strong>Error!</strong> Invalid input for first name.
+        <strong>Error!</strong> Invalid input for first name!
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <% } %>
 
 <% if(lastName === "error") { %>
     <div id="lastNameErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
-        <strong>Error!</strong> Invalid input for last name.
+        <strong>Error!</strong> Invalid input for last name!
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <% } %>
 
 <% if(number === "error") { %>
     <div id="numberErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
-        <strong>Error!</strong> Invalid input for number (Must be between 0 and 99).
+        <strong>Error!</strong> Invalid input for number (Must be between 0 and 99)!
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <% } %>
 
 <% if(team === "error") { %>
     <div id="teamErrorBackend" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
-        <strong>Error!</strong> Invalid input for team (Must be full team name).
+        <strong>Error!</strong> Invalid input for team (Must be full team name)!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(mlbPlayersDelete === "false") { %>
+    <div id="mlbPlayerDeleteError" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> An MLB Player with this information does not exist!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(mlbPlayersCreate === "false") { %>
+    <div id="mlbPlayerCreateError" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> Invalid input for team (Must be full team name)!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(mlbPlayersEdit === "empty") { %>
+    <div id="mlbPlayerEditEmptyError" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> Must provide at least 1 field to be updated!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(mlbPlayersEdit === "dne") { %>
+    <div id="mlbPlayerEditDneError" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> An MLB Player with this information does not exist!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(mlbPlayersEdit === "exists") { %>
+    <div id="mlbPlayerEditExistsError" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> An MLB Player with this information already exists!
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <% } %>

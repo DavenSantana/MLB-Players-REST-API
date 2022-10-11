@@ -1,6 +1,20 @@
-<% if(mlbPlayerDelete === "true") { %>
-    <div class="text-center mx-auto alert alert-success alert-dismissible fade show mt-3 col-4">
+<% if(mlbPlayersDelete === "true") { %>
+    <div id="mlbPlayerDeleteSuccess" class="text-center mx-auto alert alert-success alert-dismissible fade show mt-3 col-4">
         <strong>Success!</strong> The player was successfully deleted!
         <button id="mlbPlayerDeleteTrueClose" type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(mlbPlayersCreate === "true") { %>
+    <div id="mlbPlayerCreateSuccess" class="text-center mx-auto alert alert-success alert-dismissible fade show mt-3 col-4">
+        <strong>Success!</strong> The player was successfully created!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>
+
+<% if(mlbPlayersEdit === "success") { %>
+    <div id="mlbPlayerEditSuccess" class="text-center mx-auto alert alert-success alert-dismissible fade show mt-3 col-4">
+        <strong>Success!</strong> The player was successfully edited!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <% } %>
