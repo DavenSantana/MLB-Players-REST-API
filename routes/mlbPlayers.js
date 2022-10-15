@@ -4,342 +4,362 @@ const mlbPlayer = require("../schema/mlbPlayer");
 const router = express.Router();
 
 module.exports = () => {
-    
-    router.get("/", async (req, res) => {
+	router.get("/", async (req, res) => {
+		let mlbPlayersTable = await createTableForMLBPlayers();
 
-        let mlbPlayersTable = await createTableForMLBPlayers();
+		return res.render("mlbPlayers", { firstName: req.query.firstName, lastName: req.query.lastName, number: req.query.number, team: req.query.team, mlbPlayersTable: mlbPlayersTable, mlbPlayersDelete: req.query.delete, mlbPlayersCreate: req.query.create, mlbPlayersEdit: req.query.edit });
+	});
 
-        return res.render("mlbPlayers", {firstName: req.query.firstName, 
-                                        lastName: req.query.lastName, 
-                                        number: req.query.number, 
-                                        team: req.query.team,
-                                        mlbPlayersTable: mlbPlayersTable,
-                                        mlbPlayersDelete: req.query.delete,
-                                        mlbPlayersCreate: req.query.create,
-                                        mlbPlayersEdit: req.query.edit});
-    });
-
-    router.get("/v1/get/:firstName/:lastName/:number/:team", (req, res) => {
-
-        // Watch a video to better understand how to return the json object
-        // when using the get route
-
-    });
-
-    router.get("/v1/get/:firstName/:lastName/:number", (req, res) => {
-
-    });
-
-    router.get("/v1/get/:firstName/:lastName", (req, res) => {
-
-    });
-
-    router.get("/v1/get/:firstName?firstName=true", (req, res) => {
-
-        // Returns all players with first name as the argument
-
-    });
-
-    router.get("/v1/get/:lastName?lastName=true", (req, res) => {
-
-        // Returns all players with first name as the argument
-
-    });
-
-    router.get("/v1/get/:team?team=true", (req, res) => {
-
-        // Returns all players on that team
-
-    });
-
-    // Creates a new player through API, also works through front end
-    router.get("/v1/post/:firstName/:lastName/:number/:team", async (req, res, next) => {
+	router.get("/v1/get", async (req, res) => {
 
         const nameRegex = /^[a-z ,.'-]+$/i;
+		
+        let firstName = req.query.firstName;
+		let lastName = req.query.lastName;
+		let number = req.query.number;
+		let team = req.query.team;
 
-        let firstName = req.params.firstName;
-        let lastName = req.params.lastName;
-        let number = req.params.number;
-        let team = req.params.team;
-
-        firstName = capitalizeFirstLetter(firstName);
-        lastName = capitalizeFirstLetter(lastName);
-        team = toUpperCaseEachWord(team);
-
-        let errorExists = false;
-
-        if(firstName == "" || !firstName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?firstName=error");
-        } 
-
-        if(lastName == "" || !lastName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?lastName=error");
-        }
-
-        if(number == "" || isNaN(number) || number > 99 || number < 0){ 
-            errorExists = true;
-            res.redirect("/mlbPlayers?number=error");
-        } 
-
-        if(!teamExists(team)){
-            errorExists = true;
-            res.redirect("/mlbPlayers?team=error");
-        }
-
-        if(!errorExists){
+		if (firstName != undefined && firstName != "") {
+			firstName = capitalizeFirstLetter(firstName);
             
-            try{
+            if (!firstName.match(nameRegex)) {
+                return res.redirect("/mlbPlayers?firstName=error");
+            }
+		} 
 
-                const player = await mlbPlayer.findOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
+		if (lastName != undefined && lastName != "") {
+			lastName = capitalizeFirstLetter(lastName);
 
-                if(!player) {
+            if (!lastName.match(nameRegex)) {
+                return res.redirect("/mlbPlayers?lastName=error");
+            }
+		}
 
-                    const newPlayer = new mlbPlayer({
-                        firstName: firstName,
-                        lastName: lastName,
-                        number: number,
-                        team: team,
-                    });
+		if (team != undefined && team != "") {
+			team = toUpperCaseEachWord(team);
+            console.log(team);
+            if (team != "Null" && !teamExists(team)) {
+                return res.redirect("/mlbPlayers?team=error");
+            }
+		}
 
-                    const savedPlayer = await newPlayer.save();
-
-                    if (savedPlayer) {
-                        return res.redirect("/mlbPlayers?create=true");
-                    }
-
-                    return next(new Error("Failed to save user for unknown reasons"));
-
-                } else {
-                    return res.redirect("/mlbPlayers?create=false")
-                }
-
-            } catch(err) {
-                return next(err);
+        if(number != undefined && number != "") {
+            if (isNaN(number) || number > 99 || number < 0) {
+                return res.redirect("/mlbPlayers?number=error");
             }
         }
 
-    });
+        if (firstName != undefined && lastName != undefined && number != undefined && team != undefined) {
+            const player = await mlbPlayer.findOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
+            return res.json(player);
+        } else if (firstName != undefined && lastName == undefined && number == undefined && team == undefined) {
+            const player = await mlbPlayer.find({ firstName: firstName }).exec();
+            return res.json(player);
+        } else if (firstName == undefined && lastName != undefined && number == undefined && team == undefined) {
+            const player = await mlbPlayer.find({ lastName: lastName }).exec();
+            return res.json(player);
+        } else if (firstName == undefined && lastName == undefined && number != undefined && team == undefined) {
+            const player = await mlbPlayer.find({ number: number }).exec();
+            return res.json(player);
+        } else if (firstName == undefined && lastName == undefined && number == undefined && team != undefined) {
+            const player = await mlbPlayer.find({ team: team }).exec();
+            return res.json(player);
+        } else if (firstName != undefined && lastName != undefined && number == undefined && team == undefined) {
+            const player = await mlbPlayer.find({ firstName: firstName, lastName: lastName }).exec();
+            return res.json(player);
+        } else if (firstName != undefined && lastName == undefined && number != undefined && team == undefined) {
+            const player = await mlbPlayer.find({ firstName: firstName, number: number }).exec();
+            return res.json(player);
+        } else if (firstName != undefined && lastName == undefined && number == undefined && team != undefined) {
+            const player = await mlbPlayer.find({ firstName: firstName, team: team }).exec();
+            return res.json(player);
+        } else if (firstName != undefined && lastName != undefined && number != undefined && team == undefined) {
+            const player = await mlbPlayer.find({ firstName: firstName, lastName: lastName, number: number }).exec();
+            return res.json(player);
+        } else if (firstName != undefined && lastName != undefined && number == undefined && team != undefined) {
+            const player = await mlbPlayer.find({ firstName: firstName, lastName: lastName, team: team }).exec();
+            return res.json(player);
+        } else if (firstName == undefined && lastName != undefined && number != undefined && team == undefined) {
+            const player = await mlbPlayer.find({ lastName: lastName, number: number }).exec();
+            return res.json(player);
+        } else if (firstName == undefined && lastName != undefined && number == undefined && team != undefined) {
+            const player = await mlbPlayer.find({ lastName: lastName, team: team }).exec();
+            return res.json(player);
+        } else if (firstName == undefined && lastName != undefined && number != undefined && team != undefined) {
+            const player = await mlbPlayer.find({ lastName: lastName, number: number, team: team }).exec();
+            return res.json(player);
+        } else if (firstName == undefined && lastName == undefined && number != undefined && team != undefined) {
+            const player = await mlbPlayer.find({ number: number, team: team }).exec();
+            return res.json(player);
+        }
+	});
 
-    // Deletes a player through API, also works through front end
-    router.get("/v1/delete/:firstName/:lastName/:number/:team", async (req, res, next) => {
+	router.get("/v1/get/all", async (req, res) => {
+		const allPlayers = await mlbPlayer.find({}).exec();
+        return res.json(allPlayers);
+	});
 
+	// If I want to can create through the Postman POST body
+	router.post("/v1/post", (req, res) => {
+		let body = req.body;
+		return res.json(body);
+	});
+
+	// Creates a new player through API, also works through front end
+	router.get("/v1/post/:firstName/:lastName/:number/:team", async (req, res, next) => {
+		
         const nameRegex = /^[a-z ,.'-]+$/i;
 
-        let firstName = req.params.firstName;
-        let lastName = req.params.lastName;
-        let number = req.params.number;
-        let team = req.params.team;
+		let firstName = req.params.firstName;
+		let lastName = req.params.lastName;
+		let number = req.params.number;
+		let team = req.params.team;
 
-        firstName = capitalizeFirstLetter(firstName);
-        lastName = capitalizeFirstLetter(lastName);
-        team = toUpperCaseEachWord(team);
+		firstName = capitalizeFirstLetter(firstName);
+		lastName = capitalizeFirstLetter(lastName);
+		team = toUpperCaseEachWord(team);
 
-        let errorExists = false;
+		if (firstName == "" || !firstName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?firstName=error");
+		}
 
-        if(firstName == "" || !firstName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?firstName=error");
-        } 
+		if (lastName == "" || !lastName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?lastName=error");
+		}
 
-        if(lastName == "" || !lastName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?lastName=error");
-        }
+		if (number == "" || isNaN(number) || number > 99 || number < 0) {
+			return res.redirect("/mlbPlayers?number=error");
+		}
 
-        if(number == "" || isNaN(number) || number > 99 || number < 0){ 
-            errorExists = true;
-            res.redirect("/mlbPlayers?number=error");
-        } 
+		if (!teamExists(team)) {
+			return res.redirect("/mlbPlayers?team=error");
+		}
 
-        if(!teamExists(team)){
-            errorExists = true;
-            res.redirect("/mlbPlayers?team=error");
-        }
+		try {
+			const player = await mlbPlayer.findOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
 
-        if(!errorExists){
-           
-            try{
+			if (!player) {
+				const newPlayer = new mlbPlayer({
+					firstName: firstName,
+					lastName: lastName,
+					number: number,
+					team: team,
+				});
 
-                const player = await mlbPlayer.findOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
+				const savedPlayer = await newPlayer.save();
 
-                if(player) {
-                    await mlbPlayer.deleteOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
-                    return res.redirect("/mlbPlayers?delete=true");
-                } else {
-                    return res.redirect("/mlbPlayers?delete=false")
-                }
+				if (savedPlayer) {
+					return res.redirect("/mlbPlayers?create=true");
+					// return res.json(newPlayer);
+				}
 
-            } catch(err) {
-                return next(err);
-            }
-        }
+				return next(new Error("Failed to save user for unknown reasons"));
+			} else {
+				return res.redirect("/mlbPlayers?create=false");
+			}
+		} catch (err) {
+			return next(err);
+		}
+	});
 
-    });
+	// If I want to, can delete through postman DELETE body
+	router.delete("/v1/delete", (req, res) => {
+		let body = req.body;
+		return res.json(body);
+	});
 
-    // Edit a player through API, works through front end
-    router.get("/v1/edit/:firstName/:lastName/:number/:team", async (req, res, next) => { 
+	// Deletes a player through API, also works through front end
+	router.get("/v1/delete/:firstName/:lastName/:number/:team", async (req, res, next) => {
+		const nameRegex = /^[a-z ,.'-]+$/i;
 
-        const nameRegex = /^[a-z ,.'-]+$/i;
+		let firstName = req.params.firstName;
+		let lastName = req.params.lastName;
+		let number = req.params.number;
+		let team = req.params.team;
 
-        let firstName = req.params.firstName;
-        let lastName = req.params.lastName;
-        let number = req.params.number;
-        let team = req.params.team;
+		firstName = capitalizeFirstLetter(firstName);
+		lastName = capitalizeFirstLetter(lastName);
+		team = toUpperCaseEachWord(team);
 
-        let newFirstName = req.query.firstName;
-        let newLastName = req.query.lastName;
-        let newNumber = req.query.number;
-        let newTeam = req.query.team;
+		if (firstName == "" || !firstName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?firstName=error");
+		}
 
-        firstName = capitalizeFirstLetter(firstName);
-        lastName = capitalizeFirstLetter(lastName);
-        team = toUpperCaseEachWord(team);
+		if (lastName == "" || !lastName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?lastName=error");
+		}
 
-        // Have to check if the query is passed before you try and change the values
-        if(newFirstName != undefined) {
-            newFirstName = capitalizeFirstLetter(newFirstName);
-        }
+		if (number == "" || isNaN(number) || number > 99 || number < 0) {
+			return res.redirect("/mlbPlayers?number=error");
+		}
 
-        if(newLastName != undefined) {
-            newLastName = capitalizeFirstLetter(newLastName);
-        }
+		if (!teamExists(team)) {
+			return res.redirect("/mlbPlayers?team=error");
+		}
 
-        if(newTeam != undefined) {
-            newTeam = toUpperCaseEachWord(newTeam);
-        }
+		try {
+			const player = await mlbPlayer.findOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
 
-        let errorExists = false;
+			if (player) {
+				await mlbPlayer.deleteOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
+				return res.redirect("/mlbPlayers?delete=true");
+			} else {
+				return res.redirect("/mlbPlayers?delete=false");
+			}
+		} catch (err) {
+			return next(err);
+		}
+	});
 
-        // Check if the information for the player to be edited is correct
-        if(firstName == "" || !firstName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?firstName=error");
-        } 
+	// If I want to, can edit through postman PUT body
+	router.put("/v1/edit", (req, res) => {
+		let body = req.body;
+		return res.json(body);
+	});
 
-        if(lastName == "" || !lastName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?lastName=error");
-        }
+	// Edit a player through API, works through front end
+	router.get("/v1/edit/:firstName/:lastName/:number/:team", async (req, res, next) => {
+		const nameRegex = /^[a-z ,.'-]+$/i;
 
-        if(number == "" || isNaN(number) || number > 99 || number < 0){ 
-            errorExists = true;
-            res.redirect("/mlbPlayers?number=error");
-        } 
+		let firstName = req.params.firstName;
+		let lastName = req.params.lastName;
+		let number = req.params.number;
+		let team = req.params.team;
 
-        if(!teamExists(team)){
-            errorExists = true;
-            res.redirect("/mlbPlayers?team=error");
-        }
+		let newFirstName = req.query.firstName;
+		let newLastName = req.query.lastName;
+		let newNumber = req.query.number;
+		let newTeam = req.query.team;
 
-        // Check if the information to be changed to is correct
-        if(newFirstName == undefined && newLastName == undefined && newTeam == undefined && newNumber == undefined) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?edit=empty")
-        }
+		firstName = capitalizeFirstLetter(firstName);
+		lastName = capitalizeFirstLetter(lastName);
+		team = toUpperCaseEachWord(team);
 
-        if(newFirstName != undefined && !newFirstName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?firstName=error");
-        } 
+		// Have to check if the query is passed before you try and change the values
+		if (newFirstName != undefined && newFirstName != "") {
+			newFirstName = capitalizeFirstLetter(newFirstName);
+		}
 
-        if(newLastName != undefined && !newLastName.match(nameRegex)) {
-            errorExists = true;
-            res.redirect("/mlbPlayers?lastName=error");
-        }
+		if (newLastName != undefined && newLastName != "") {
+			newLastName = capitalizeFirstLetter(newLastName);
+		}
 
-        if(newNumber != undefined && isNaN(number) || newNumber != undefined && number > 99 || newNumber != undefined && number < 0){ 
-            errorExists = true;
-            res.redirect("/mlbPlayers?number=error");
-        } 
+		if (newTeam != undefined && newTeam != "") {
+			newTeam = toUpperCaseEachWord(newTeam);
+		}
 
-        if(newTeam != undefined && !teamExists(newTeam)){
-            errorExists = true;
-            res.redirect("/mlbPlayers?team=error");
-        }
+		// Check if the information for the player to be edited is correct
+		if (firstName == "" || !firstName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?firstName=error");
+		}
 
-        if(!errorExists){
+		if (lastName == "" || !lastName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?lastName=error");
+		}
 
-            try{
+		if (number == "" || isNaN(number) || number > 99 || number < 0) {
+			return res.redirect("/mlbPlayers?number=error");
+		}
 
-                const playerToEdit = await mlbPlayer.findOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
-                const checkIfPlayerWithNewInfoExists = await mlbPlayer.findOne({ firstName: newFirstName, lastName: newLastName, number: newNumber, team: newTeam }).exec();
-                
-                // If a player with the info exists and no player with the new info already exists then we will update
-                if(playerToEdit && !checkIfPlayerWithNewInfoExists) {
-                    
-                    if(newFirstName != undefined && newLastName != undefined && newNumber != undefined && newTeam != undefined) {
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {firstName: newFirstName, lastName: newLastName, number: newNumber, team: newTeam}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName != undefined && newLastName == undefined && newNumber == undefined && newTeam == undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {firstName: newFirstName}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName == undefined && newLastName != undefined && newNumber == undefined && newTeam == undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {lastName: newLastName}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName == undefined && newLastName == undefined && newNumber != undefined && newTeam == undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {number: newNumber}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName == undefined && newLastName == undefined && newNumber == undefined && newTeam != undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {team: newTeam}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName != undefined && newLastName != undefined && newNumber == undefined && newTeam == undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {firstName: newFirstName, lastName: newLastName}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName != undefined && newLastName == undefined && newNumber != undefined && newTeam == undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {firstName: newFirstName, number: newNumber}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName != undefined && newLastName == undefined && newNumber == undefined && newTeam != undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {firstName: newFirstName, team: newTeam}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName != undefined && newLastName != undefined && newNumber != undefined && newTeam == undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {firstName: newFirstName, lastName: newLastName, number: newNumber}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName != undefined && newLastName != undefined && newNumber == undefined && newTeam != undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {firstName: newFirstName, lastName: newLastName, team: newTeam}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName == undefined && newLastName != undefined && newNumber != undefined && newTeam == undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {lastName: newLastName, number: newNumber}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName == undefined && newLastName != undefined && newNumber == undefined && newTeam != undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {lastName: newLastName, team: newTeam}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName == undefined && newLastName != undefined && newNumber != undefined && newTeam != undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {lastName: newLastName, number: newNumber, team: newTeam}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    } else if(newFirstName == undefined && newLastName == undefined && newNumber != undefined && newTeam != undefined) { 
-                        const player = await mlbPlayer.findOneAndUpdate({firstName: firstName, lastName: lastName, number: number, team: team}, {number: newNumber, team: newTeam}).exec();
-                        const savedPlayer = await player.save();
-                        if(savedPlayer) return res.redirect("/mlbPlayers?edit=success");
-                    }
-                } else if(!playerToEdit) {
-                    res.redirect("/mlbPlayers?edit=dne")
-                } else if(checkIfPlayerWithNewInfoExists) {
-                    res.redirect("/mlbPlayers?edit=exists")
-                }
+		if (!teamExists(team)) {
+			return res.redirect("/mlbPlayers?team=error");
+		}
 
-            } catch(err) {
-                return next(err);
-            }
-        }
+		// Check if the information to be changed to is correct
+		if (newFirstName == undefined && newLastName == undefined && newTeam == undefined && newNumber == undefined) {
+			return res.redirect("/mlbPlayers?edit=empty");
+		}
 
-    });
+		if (newFirstName != undefined && !newFirstName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?firstName=error");
+		}
 
-    return router;
+		if (newLastName != undefined && !newLastName.match(nameRegex)) {
+			return res.redirect("/mlbPlayers?lastName=error");
+		}
+
+		if ((newNumber != undefined && isNaN(number)) || (newNumber != undefined && number > 99) || (newNumber != undefined && number < 0)) {
+			return res.redirect("/mlbPlayers?number=error");
+		}
+
+		if (newTeam != undefined && !teamExists(newTeam)) {
+			return res.redirect("/mlbPlayers?team=error");
+		}
+
+		try {
+			const playerToEdit = await mlbPlayer.findOne({ firstName: firstName, lastName: lastName, number: number, team: team }).exec();
+			const checkIfPlayerWithNewInfoExists = await mlbPlayer.findOne({ firstName: newFirstName, lastName: newLastName, number: newNumber, team: newTeam }).exec();
+
+			// If a player with the info exists and no player with the new info already exists then we will update
+			if (playerToEdit && !checkIfPlayerWithNewInfoExists) {
+				if (newFirstName != undefined && newLastName != undefined && newNumber != undefined && newTeam != undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { firstName: newFirstName, lastName: newLastName, number: newNumber, team: newTeam }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName != undefined && newLastName == undefined && newNumber == undefined && newTeam == undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { firstName: newFirstName }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName == undefined && newLastName != undefined && newNumber == undefined && newTeam == undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { lastName: newLastName }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName == undefined && newLastName == undefined && newNumber != undefined && newTeam == undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { number: newNumber }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName == undefined && newLastName == undefined && newNumber == undefined && newTeam != undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { team: newTeam }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName != undefined && newLastName != undefined && newNumber == undefined && newTeam == undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { firstName: newFirstName, lastName: newLastName }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName != undefined && newLastName == undefined && newNumber != undefined && newTeam == undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { firstName: newFirstName, number: newNumber }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName != undefined && newLastName == undefined && newNumber == undefined && newTeam != undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { firstName: newFirstName, team: newTeam }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName != undefined && newLastName != undefined && newNumber != undefined && newTeam == undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { firstName: newFirstName, lastName: newLastName, number: newNumber }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName != undefined && newLastName != undefined && newNumber == undefined && newTeam != undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { firstName: newFirstName, lastName: newLastName, team: newTeam }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName == undefined && newLastName != undefined && newNumber != undefined && newTeam == undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { lastName: newLastName, number: newNumber }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName == undefined && newLastName != undefined && newNumber == undefined && newTeam != undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { lastName: newLastName, team: newTeam }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName == undefined && newLastName != undefined && newNumber != undefined && newTeam != undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { lastName: newLastName, number: newNumber, team: newTeam }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				} else if (newFirstName == undefined && newLastName == undefined && newNumber != undefined && newTeam != undefined) {
+					const player = await mlbPlayer.findOneAndUpdate({ firstName: firstName, lastName: lastName, number: number, team: team }, { number: newNumber, team: newTeam }).exec();
+					const savedPlayer = await player.save();
+					if (savedPlayer) return res.redirect("/mlbPlayers?edit=success");
+				}
+			} else if (!playerToEdit) {
+				res.redirect("/mlbPlayers?edit=dne");
+			} else if (checkIfPlayerWithNewInfoExists) {
+				res.redirect("/mlbPlayers?edit=exists");
+			}
+		} catch (err) {
+			return next(err);
+		}
+	});
+
+	return router;
 };
 
 function capitalizeFirstLetter(string) {

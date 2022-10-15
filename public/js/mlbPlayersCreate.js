@@ -49,7 +49,6 @@ $("#linkToCreate").on("click", (e) => {
 	} 
 
     let apiPostURL = `mlbPlayers/v1/post/${firstName}/${lastName}/${number}/${team}`
-    console.log(apiPostURL);
 
     $("#linkToCreate").attr("href", apiPostURL);
 });

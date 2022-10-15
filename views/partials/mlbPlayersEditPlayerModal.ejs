@@ -1,0 +1,42 @@
+<div class="modal" id="editPlayer" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center mb-5">
+                <i class="bi bi-pencil-square fa-3x"></i>
+                <h1 class="h2 mb-4">Edit a Player</h1>
+                
+                <form id="editPlayerForm">
+                    
+                    <%- include('./mlbPlayersModalErrorsEdit.ejs') %>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="firstNameEdit" name = "firstNameEdit" class="form-control form-control-md" />
+                        <label class="form-label" for="firstNameEdit">First Name</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="lastNameEdit" name = "lastNameEdit" class="form-control form-control-md" />
+                        <label class="form-label" for="lastNameEdit">Last Name</label>
+                    </div>
+
+                    <div class="form-outline mb-3">
+                        <input type="number" min="0" max="99" id="numberEdit" name = "numberEdit" class="form-control form-control-md" />
+                        <label class="form-label" for="numberEdit">Number</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="teamEdit">Choose Team</label>
+                        <%- include('./mlbPlayersSelectEdit.ejs') %>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary btn-lg mr-2 rounded-lg" data-bs-dismiss="modal">Cancel</button>
+                        <a id="linkToEdit" type="button" class="btn btn-info btn-lg rounded-lg">Edit</a>
+                    </div>
+                
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

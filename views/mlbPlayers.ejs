@@ -24,6 +24,7 @@
 
         <div class="container text-center">
             <button class="btn btn-lg btn-dark rounded-1 mt-5 me-3" type="button" data-bs-toggle="modal" data-bs-target="#createPlayer">Create Player</button>
+            <button class="btn btn-lg btn-dark rounded-1 mt-5 me-3" type="button" data-bs-toggle="modal" data-bs-target="#findPlayer">Get Player Info</button>
         </div>
 
         <div class="container mt-5">
@@ -45,40 +46,46 @@
           </table>
         </div>
         
-        <div class="modal" id="createPlayer" aria-hidden="true" style="display: none;">
+        <%- include('./partials/mlbPlayersCreatePlayerModal.ejs') %>
+
+        <%- include('./partials/mlbPlayersEditPlayerModal.ejs') %>
+
+        <%- include('./partials/mlbPlayersDeletePlayerModal.ejs') %>
+
+        <div class="modal" id="findPlayer" aria-hidden="true" style="display: none;">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-body text-center mb-5">
-                        <i class="bi bi-person-plus-fill fa-3x"></i>
-                        <h1 class="h2 mb-4">Create a Player</h1>
+                        <i class="bi bi-search fa-3x"></i>
+                        <h1 class="h2 mb-4">Find a Player/s</h1>
                         
-                        <form id="createPlayerForm">
-                            
-                            <%- include('./partials/mlbPlayersModalErrors.ejs') %>
+                        <form id="findPlayerForm">
+
+                            <%- include('./partials/mlbPlayersModalErrorsFind.ejs') %>
 
                             <div class="form-outline mb-4">
-                                <input type="text" id="firstNameCreate" name = "firstNameCreate" class="form-control form-control-md" />
-                                <label class="form-label" for="firstNameCreate">First Name</label>
+                                <input type="text" id="firstNameFind" name = "firstNameFind" class="form-control form-control-md" />
+                                <label class="form-label" for="firstNameFind">First Name</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="text" id="lastNameCreate" name = "lastNameCreate" class="form-control form-control-md" />
-                                <label class="form-label" for="lastNameCreate">Last Name</label>
+                                <input type="text" id="lastNameFind" name = "lastNameFind" class="form-control form-control-md" />
+                                <label class="form-label" for="lastNameFind">Last Name</label>
                             </div>
 
                             <div class="form-outline mb-3">
-                                <input type="number" min="0" max="99" id="numberCreate" name = "numberCreate" class="form-control form-control-md" />
-                                <label class="form-label" for="numberCreate">Number</label>
+                                <input type="number" min="0" max="99" id="numberFind" name = "numberFind" class="form-control form-control-md" />
+                                <label class="form-label" for="numberFind">Number</label>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label" for="teamCreate">Choose Team</label>
-                                <%- include('./partials/mlbPlayersSelectCreate.ejs') %>
+                                <label class="form-label" for="teamFind">Choose Team</label>
+                                <%- include('./partials/mlbPlayersSelectFind.ejs') %>
                             </div>
 
                             <div class="btn-group">
                                 <button type="button" class="btn btn-secondary btn-lg mr-2 rounded-lg" data-bs-dismiss="modal">Cancel</button>
-                                <a id="linkToCreate" type="button" class="btn btn-info btn-lg rounded-lg">Create</a>
+                                <a id="linkToFind" type="button" class="btn btn-info btn-lg rounded-lg">Find</a>
                             </div>
                         
                         </form>
@@ -88,76 +95,19 @@
 			</div>
 		</div>
 
-        <div class="modal" id="editPlayer" aria-hidden="true" style="display: none;">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-body text-center mb-5">
-                        <i class="bi bi-pencil-square fa-3x"></i>
-                        <h1 class="h2 mb-4">Edit a Player</h1>
-                        
-                        <form id="editPlayerForm">
-                            
-                            <%- include('./partials/mlbPlayersModalErrors.ejs') %>
 
-                            <div class="form-outline mb-4">
-                                <input type="text" id="firstNameEdit" name = "firstNameEdit" class="form-control form-control-md" />
-                                <label class="form-label" for="firstNameEdit">First Name</label>
-                            </div>
-
-                            <div class="form-outline mb-4">
-                                <input type="text" id="lastNameEdit" name = "lastNameEdit" class="form-control form-control-md" />
-                                <label class="form-label" for="lastNameEdit">Last Name</label>
-                            </div>
-
-                            <div class="form-outline mb-3">
-                                <input type="number" min="0" max="99" id="numberEdit" name = "numberEdit" class="form-control form-control-md" />
-                                <label class="form-label" for="numberEdit">Number</label>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label" for="teamEdit">Choose Team</label>
-                                <%- include('./partials/mlbPlayersSelectEdit.ejs') %>
-                            </div>
-
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-secondary btn-lg mr-2 rounded-lg" data-bs-dismiss="modal">Cancel</button>
-                                <a id="linkToEdit" type="button" class="btn btn-info btn-lg rounded-lg">Edit</a>
-                            </div>
-                        
-                        </form>
-						
-					</div>
-				</div>
-			</div>
-		</div>
-
-        <div class="modal" id="deleteModal" aria-hidden="true" style="display: none;">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-body text-center mb-5">
-						<i width="32" height="32" class="bi bi-x-octagon fa-5x mt-3"></i>
-						<h1>Are You Sure?</h1>
-						<p>Do you really want to delete this player? This process cannot be undone.</p>
-						<div class="btn-group">
-							<button type="button" class="btn btn-secondary btn-lg mr-2 rounded-lg"
-								data-bs-dismiss="modal">Cancel</button>
-							<a id="linkToDelete" type="button" class="btn btn-danger btn-lg rounded-lg">Delete</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="../public/js/mlbPlayersCreate.js"></script>
+<script src="../public/js/mlbPlayersFind.js"></script>
 <script src="../public/js/mlbPlayersCloseRedirect.js"></script>
 <script>
-
-    let originalPlayerInfo = [];
 
     $("#deleteModal").on("show.bs.modal", function (event) {
         $("#linkToDelete").attr("href", event.relatedTarget.id);
     });
+
+    let originalPlayerInfo = [];
 
     $("#editPlayer").on("show.bs.modal", function (event) {
 
