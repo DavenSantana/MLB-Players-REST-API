@@ -1,0 +1,42 @@
+<div class="modal" id="findPlayer" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center mb-5">
+                <i class="bi bi-search fa-3x"></i>
+                <h1 class="h2 mb-4">Find a Player/s</h1>
+                
+                <form id="findPlayerForm">
+
+                    <%- include('./mlbPlayersModalErrorsFind.ejs') %>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="firstNameFind" name = "firstNameFind" class="form-control form-control-md" />
+                        <label class="form-label" for="firstNameFind">First Name</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="lastNameFind" name = "lastNameFind" class="form-control form-control-md" />
+                        <label class="form-label" for="lastNameFind">Last Name</label>
+                    </div>
+
+                    <div class="form-outline mb-3">
+                        <input type="number" min="0" max="99" id="numberFind" name = "numberFind" class="form-control form-control-md" />
+                        <label class="form-label" for="numberFind">Number</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="teamFind">Choose Team</label>
+                        <%- include('./mlbPlayersSelectFind.ejs') %>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary btn-lg mr-2 rounded-lg" data-bs-dismiss="modal">Cancel</button>
+                        <a id="linkToFind" type="button" class="btn btn-info btn-lg rounded-lg">Find</a>
+                    </div>
+                
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

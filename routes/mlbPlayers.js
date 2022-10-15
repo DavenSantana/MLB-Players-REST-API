@@ -100,10 +100,10 @@ module.exports = () => {
 	});
 
 	// If I want to can create through the Postman POST body
-	router.post("/v1/post", (req, res) => {
-		let body = req.body;
-		return res.json(body);
-	});
+	// router.post("/v1/post", (req, res) => {
+	// 	let body = req.body;
+	// 	return res.json(body);
+	// });
 
 	// Creates a new player through API, also works through front end
 	router.get("/v1/post/:firstName/:lastName/:number/:team", async (req, res, next) => {
@@ -163,10 +163,10 @@ module.exports = () => {
 	});
 
 	// If I want to, can delete through postman DELETE body
-	router.delete("/v1/delete", (req, res) => {
-		let body = req.body;
-		return res.json(body);
-	});
+	// router.delete("/v1/delete", (req, res) => {
+	// 	let body = req.body;
+	// 	return res.json(body);
+	// });
 
 	// Deletes a player through API, also works through front end
 	router.get("/v1/delete/:firstName/:lastName/:number/:team", async (req, res, next) => {
@@ -212,10 +212,10 @@ module.exports = () => {
 	});
 
 	// If I want to, can edit through postman PUT body
-	router.put("/v1/edit", (req, res) => {
-		let body = req.body;
-		return res.json(body);
-	});
+	// router.put("/v1/edit", (req, res) => {
+	// 	let body = req.body;
+	// 	return res.json(body);
+	// });
 
 	// Edit a player through API, works through front end
 	router.get("/v1/edit/:firstName/:lastName/:number/:team", async (req, res, next) => {
