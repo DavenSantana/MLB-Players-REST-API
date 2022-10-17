@@ -248,6 +248,10 @@ module.exports = () => {
 			newTeam = toUpperCaseEachWord(newTeam);
 		}
 
+		if(firstName == newFirstName && lastName == newLastName && number == newNumber && team == newTeam) {
+			return res.redirect("/mlbPlayers?edit=noChange");
+		}
+
 		// Check if the information for the player to be edited is correct
 		if (firstName == "" || !firstName.match(nameRegex)) {
 			return res.redirect("/mlbPlayers?firstName=error");

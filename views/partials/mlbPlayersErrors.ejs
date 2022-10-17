@@ -60,3 +60,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 <% } %>
+
+<% if(mlbPlayersEdit === "noChange") { %>
+    <div id="mlbPlayerEditNoChangeError" class="text-center mx-auto alert alert-danger alert-dismissible fade show mt-3 col-4">
+        <strong>Error!</strong> No information was changed on this player!
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+<% } %>

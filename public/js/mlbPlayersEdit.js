@@ -2,6 +2,7 @@ let originalPlayerInfo = [];
 
 $("#editPlayer").on("show.bs.modal", function (event) {
 
+    $("#sameInformationErrorEdit").attr("hidden", "hidden");
     $("#firstNameErrorEdit").attr("hidden", "hidden");
     $("#firstNameRegexErrorEdit").attr("hidden", "hidden");
     $("#lastNameErrorEdit").attr("hidden", "hidden");
@@ -21,6 +22,7 @@ $("#editPlayer").on("show.bs.modal", function (event) {
 
 $("#linkToEdit").on("click", (e) => {
 
+    $("#sameInformationErrorEdit").attr("hidden", "hidden");
     $("#firstNameErrorEdit").attr("hidden", "hidden");
     $("#firstNameRegexErrorEdit").attr("hidden", "hidden");
     $("#lastNameErrorEdit").attr("hidden", "hidden");
@@ -34,6 +36,11 @@ $("#linkToEdit").on("click", (e) => {
     let lastName = $("#lastNameEdit").val();
     let number = $("#numberEdit").val();
     let team = $("#teamEdit").val();
+
+    if(firstName == originalPlayerInfo[0] && lastName == originalPlayerInfo[1] && number == originalPlayerInfo[2] && team == originalPlayerInfo[3]) {
+        e.preventDefault();
+		$("#sameInformationErrorEdit").removeAttr("hidden");
+    }
 
     if (firstName == "") {
 		e.preventDefault();
@@ -71,6 +78,12 @@ $("#linkToEdit").on("click", (e) => {
     
     $("#linkToEdit").attr("href", apiEditURL);
 });
+
+// No information changed error
+
+$("#sameInformationErrorCloseEdit").on("click", () => {
+    $("#sameInformationErrorEdit").attr("hidden", "hidden");
+})
 
 // First Name errors
 

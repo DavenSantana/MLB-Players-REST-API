@@ -45,3 +45,7 @@ $("#mlbPlayerEditDneError").on("click", () => {
 $("#mlbPlayerEditExistsError").on("click", () => {
     document.location.href = "/mlbPlayers";
 });
+
+$("#mlbPlayerEditNoChangeError").on("click", () => {
+    document.location.href = "/mlbPlayers";
+});
