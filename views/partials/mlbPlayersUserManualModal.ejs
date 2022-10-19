@@ -1,0 +1,67 @@
+<link href="http://fonts.cdnfonts.com/css/open-sans" rel="stylesheet">
+
+<div class="modal" id="userManual" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body mb-5">
+                <div class="text-center">
+                    <i class="bi bi-book fa-3x"></i>
+                </div>
+                <h1 class="h2 mb-3 text-center">User Manual</h1>
+                
+                <h1 class="h4 text-center">GET Request</h1>
+
+<pre style="white-space:pre-wrap; font-family: 'Open Sans', sans-serif; font-size: 15px;">
+• mlbPlayers/v1/get/all
+    • This GET request endpoint will return all of the players in the database.
+• mlbPlayers/v1/get?params
+    • This GET request endpoint will return no player, a single player or multiple players.
+    • There are 4 different parameters that can be used, "firstName", "lastName", "number", "team".
+    • Users can use one or more of the 4 parameters, using none will just return an empty list.
+    • If you want to find one specific player, all of the parameters must be filled out properly.
+    • Example of using all parameters : mlbPlayers/v1/get?firstName=Aaron&lastName=Judge&number=99&team=New York Yankees (firstName, lastName and team are NOT case sensitive, "aaron" and "aArOn" will find the same name, "Aaron").
+    • Example of using a single parameter : mlbPlayers/v1/get?team=New York Yankees, this will find everyone who is on the New York Yankees).
+    • Example of using multiple parameters : mlbPlayers/v1/get?firstName=Aaron&number=99, this will find everyone who's first name is Aaron and number is 99).
+• Through the front-end click the "Get Player Info" button and if the form is left empty and "Find" is clicked it will return to you all of the players inside of the database. In order to use single or multiple parameters, just fill out the form with each parameter in which the GET should look up information about players, to search just for the first name of a player, only fill out the first name field and click "Find" and so on for the other fields of the form.
+</pre>
+
+                <h1 class="h4 text-center">POST Request</h1>
+
+<pre style="white-space:pre-wrap; font-family: 'Open Sans', sans-serif; font-size: 15px;">
+• mlbPlayers/v1/post/{firstName}/{lastName}/{number}/{team}
+    • This POST request endpoint will create a player based on the information passed through each value for firstName, lastName, number and team.
+    • Example of creating a player : mlbPlayers/v1/post/Aaron/Judge/99/New York Yankees (firstName, lastName and team are NOT case sensitive).
+    • Example of an error creating a player : mlbPlayers/v1/post/99/Aaron/Judge/New York Yankees , this will return an error since the firstName is a number and also because the number field is not a number.
+• Through the front end use the "Create Player" button under the navigation bar and above the Player table, fill out the form with the information of the player you want to create and then click the "Create" button to create the player.
+</pre>
+                <h1 class="h4  text-center">PUT Request</h1>
+
+<pre style="white-space:pre-wrap; font-family: 'Open Sans', sans-serif; font-size: 15px;">
+• mlbPlayers/v1/edit/{firstName}/{lastName}/{number}/{team}/?params
+    • This PUT request endpoint will edit a single player which is under the {firstName} {lastName} {number} and {team} values, it will find the player that exists with this info (If it exists).
+    • There are 4 different parameters that can be used, "firstName", "lastName", "number", "team".
+    • Users can use one or more of the 4 parameters, using none will just leave the player with the same original information.
+    • This means a user can change just the firstName of a player and does not need to include the other 3 parameters.
+    • Example of using all parameters : mlbPlayers/v1/edit/Aaron/Judge/99/New York Yankees?firstName=Starling&lastName=Marte&number=6&team=New York Mets, this will change Aaron Judge with number 99 on the New York Yankees (If a player with this information exists) to Starling Marte with number 6 on the New York Mets.
+    • Example of using a single parameter : mlbPlayers/v1/edit/Aaron/Judge/99/New York Yankees?number=88 , this will change Aaron Judge with number 99 on the New York Yankees to have number 88 now.
+    • Example of using multiple parameters : mlbPlayers/v1/edit/Gleyber/Torres/25/New York Yankees?firstName=Dj&lastName=Lemahieu&number=26, this will change Gleyber Torres with the number 25 on the New York Yankees to Dj Lemahieu with the number 26 on the New York Yankees since the team value was the only thing not changed.
+• Through the front•end click the "Edit" icon next to a players name and just fill out the form and change the information about the player in order to update him, then click the "Edit" button to make these changes happen.
+</pre>
+                <h1 class="h4  text-center">DELETE Request</h1>
+                
+<pre style="white-space:pre-wrap; font-family: 'Open Sans', sans-serif; font-size: 15px;">
+• mlbPlayers/v1/delete/{firstName}/{lastName}/{number}/{team}
+    • This DELETE request endpoint will delete a single player with the information {firstName} {lastName} {number} and {team} have (If a player with this information exists).
+    • All of these values must be included or a player will not be deleted, you cannot delete players just based on first name and last name.
+    • Example of deleting a player : mlbPlayers/v1/delete/Aaron/Judge/99/New York Yankees, this will delete Aaron Judge with the number 99 on the New York Yankees from the database.
+• Through the front•end click the "Delete" icon or the trash can next to a players name and click the "Delete" button in order to delete this player and make these changes happen.
+</pre>
+
+<div class="text-center mx-auto">
+    <button type="button" class="btn btn-secondary btn-lg mr-2 rounded-lg" data-bs-dismiss="modal">Close</button>
+</div>
+                
+            </div>
+        </div>
+    </div>
+</div>

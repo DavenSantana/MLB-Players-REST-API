@@ -13,22 +13,42 @@
   - The home page just includes information about the project and some of the technologies I used.
   - It includes a nav bar to navigate to the other pages with the other API's.
 
+  [![GJr-cylu-Tn-Gg-LWESh-GThr-Q.png](https://i.postimg.cc/gJ08WNy3/GJr-cylu-Tn-Gg-LWESh-GThr-Q.png)](https://postimg.cc/ns6CKKPL)
+
 ## Kanye Quote API
 
   - The Kanye Quote API is a REST API which can be found at Kanye.rest and what it does is it returns quotes that Kanye West has previously said and are rememberable.
   - The API generates a random quote every time that it is sent a request.
   - In order to use the API on the website a user has to click on the picture of Kanye and a new request will be sent to the API and the quote will be changed.
 
+  [![8u-Mr5ua4-Sc-Ovwz-Nyn-Jbt-KA.png](https://i.postimg.cc/R0C8fxQf/8u-Mr5ua4-Sc-Ovwz-Nyn-Jbt-KA.png)](https://postimg.cc/QFP0GPzx)
+
 ## Rest Countries API
 
   - The Rest Countries API is a REST API which is found at restcountries.com, this API returns information about every country in the world, it returns info such as the common, currencies, languages, capital, alternate spellings, the map, regioin, subregion, latitude, longitude, google maps link and much more.
   - To request to the API it has many different ways such as using a partial name, a full name, country code, currency, language. capital  and more. The way I request to the API is through a countries full name, I do this through a select which list every country in the world and a user can select a country from the list and then click view country information and this will send the request through the full name and return the name of the country, its map, capital, a link to find it on google maps, the languages spoken and the currencies used with the symbol of the currency.
+
+  [![1-Sz72x1k-SUSPPKIHinbb4g.png](https://i.postimg.cc/3NGb78YM/1-Sz72x1k-SUSPPKIHinbb4g.png)](https://postimg.cc/wR6kQd1F)
+
+  [![r-Lr-Nrb-Hw-RDSJfgkv-Au-ABh-Q.png](https://i.postimg.cc/255cyFr7/r-Lr-Nrb-Hw-RDSJfgkv-Au-ABh-Q.png)](https://postimg.cc/5XZqkzHX)
 
 ## MLB Players API
 
   - The MLB Players API is another REST API which is one I custom built. This API allows users to GET, POST, PUT and DELETE through multiple endpoints and also through the website itself. My idea behind this REST API was to visualize how REST-API's work on the front-end and to also allow users to use endpoints to use the API.
   - A user can "visualize" the API through the front-end through the user interface through many different modals and buttons created with different functionalities such as creating, editing, deleting and finding players. What happens is that when a user fills out the modals and clicks the submit button, an API link is generated and sends the user to that specific API endpoint depending on if it was a GET, POST, PUT or DELETE.
   - A user can also just use the API through endpoints which information in the user manual tells them how to use each endpoint. The only difference which I purposely made as well is that for POST, PUT and DELETE request, if they are completed successfully the user is returned to the success page and if it was not successful, then the user is sent to the error page. I made it this way because these operations usually would return a JSON success message which is either returning the object created, edited or deleted. On an unsuccessful POST, PUT or DELETE obviously no item is returned since no item was able to be created, edited or deleted. Through using a user interface with a friendly success or error message can allow a user to know if they successfully used the API and also let the user know what error they made when using the API. The only API request which does not use the user interface are GET request which is also done purposely. This is done because when users use GET request they expect a value to be returned to them which they can easily use for information, using a GET request and being returned to the website with a table of the player/players would not be as useful and the JSON object being returned to them.
+
+  [![is-Uke6-K5-Th6-GOXv-Te5g-Ph-A.png](https://i.postimg.cc/WpB5gWB5/is-Uke6-K5-Th6-GOXv-Te5g-Ph-A.png)](https://postimg.cc/mhS3Gw29)
+
+  [![BUws6u-GKQYirb5gm-Klsl0g.png](https://i.postimg.cc/jjGHTz55/BUws6u-GKQYirb5gm-Klsl0g.png)](https://postimg.cc/gwHXqL3F)
+
+  [![j6ymo-AG-QF2t-Ae-Llyc2-S1w.png](https://i.postimg.cc/25ZD3Dzw/j6ymo-AG-QF2t-Ae-Llyc2-S1w.png)](https://postimg.cc/KKxVsC3k)
+  
+  [![pqyoj-OQVu9ggxx-I3-S7-VA.png](https://i.postimg.cc/Pf4kCKkB/pqyoj-OQVu9ggxx-I3-S7-VA.png)](https://postimg.cc/pypS7frZ)
+
+  [![x-Ow-Xgd59-Suq-Be-Xz-WEIZU1w.png](https://i.postimg.cc/cLKq5S8S/x-Ow-Xgd59-Suq-Be-Xz-WEIZU1w.png)](https://postimg.cc/ZWhDCXc7)
+
+  [![vx2-HRe-ASX2-U0z-Fn-Webji-A.png](https://i.postimg.cc/fbqKLB7j/vx2-HRe-ASX2-U0z-Fn-Webji-A.png)](https://postimg.cc/GBYYgP5H)
 
 ### MLB Players Manual
 
@@ -44,7 +64,7 @@
     - Example of using all parameters : mlbPlayers/v1/get?firstName=Aaron&lastName=Judge&number=99&team=New York Yankeees (firstName, lastName and team are NOT case sensitive, "aaron" and "aArOn" will find the same name, "Aaron").
     - Example of using a single parameter : mlbPlayers/v1/get?team=New York Yankees , this will find everyone who is on the New York Yankees).
     - Example of using multiple parameters : mlbPlayers/v1/get?firstName=Aaron&number=99 , this will find everyone who's first name is Aaron and number is 99).
-  - Through the front-end click the "Get Player Info" button and leave the form empty, just click "Find" and it will return to you all of the players inside of the database. In order to use single or multiple parameters, just fill out the form with each parameter in which the GET should look up information about players, to search just for the first name of a player, only fill out the first name field and click find and so on for the other fields of the form.
+  - Through the front-end click the "Get Player Info" button and if the form is left empty and "Find" is clicked it will return to you all of the players inside of the database. In order to use single or multiple parameters, just fill out the form with each parameter in which the GET should look up information about players, to search just for the first name of a player, only fill out the first name field and click "Find" and so on for the other fields of the form.
 
 #### POST Request
 
